@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 import uuid
 import random
 
-class insertDoctorLogin:
+class DoctorLoginDAO:
     def __init__(self):
         self.connection = mysql.connector.connect(
              host = "localhost",
@@ -38,6 +38,14 @@ class insertDoctorLogin:
             print(f"Error: {e}")
 
 
+    def getquery(self , username):
+        query = f"SELECT * FROM doctor_login WHERE username = %s"
+        self.cursor.execute(query, (username,))
+        df = pd.DataFrame(self.cursor.fetchall(), columns=[desc[0] for desc in self.cursor.description])
+        #return the df
+        print(df)
+
+
 
 if __name__ == "__main__":
     # Data for the new patient
@@ -47,5 +55,5 @@ if __name__ == "__main__":
     }
     data = pd.DataFrame(data)
     
-    inserter = insertDoctorLogin()
-    inserter.insert_doctor_data(data)
+    inserter = DoctorLoginDAO()
+    inserter.getquery('RoboDoc')

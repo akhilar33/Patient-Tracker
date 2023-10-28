@@ -2,7 +2,7 @@ import pandas as pd
 import mysql.connector
 from sqlalchemy import create_engine
 
-class GetPaitentData:
+class PaitentDAO:
     def __init__(self):
         self.connection = mysql.connector.connect(
              host = "localhost",
@@ -21,7 +21,7 @@ class GetPaitentData:
         self.cursor.execute(query, (patientdata,))
         df = pd.DataFrame(self.cursor.fetchall(), columns=[desc[0] for desc in self.cursor.description])
         #return the df
-        print(df)
+        print(type(df))
 
 
 
