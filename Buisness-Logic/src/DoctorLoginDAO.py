@@ -28,8 +28,7 @@ class DoctorLoginDAO:
         try:
 
             # Insert the data into the MySQL database table
-            data['doctor_id'] = [random.randint(100,999) for _ in range(len(data))]
-            data.to_sql(name='doctor_login', con=self.engine, if_exists='append', index=False)
+            data.to_sql(name='DoctorLogin', con=self.engine, if_exists='append', index=False)
             #data is insert
             #possible update could be show a pop up saying that paitent data is sucessfully added. 
 
@@ -39,7 +38,7 @@ class DoctorLoginDAO:
 
 
     def getquery(self , username):
-        query = f"SELECT * FROM doctor_login WHERE username = %s"
+        query = f"SELECT * FROM DoctorLogin WHERE username = %s"
         self.cursor.execute(query, (username,))
         df = pd.DataFrame(self.cursor.fetchall(), columns=[desc[0] for desc in self.cursor.description])
         #return the df
@@ -47,13 +46,19 @@ class DoctorLoginDAO:
 
 
 
-# if __name__ == "__main__":
-#     # Data for the new patient
-#     data = {
-#     'username': ['DocJohn21', 'DrSarahMD', 'HealingDocMike', 'DrEmilyD', 'RoboDoc'],
-#     'password': ['password1', 'password2', 'password3', 'password4', 'password5']
-#     }
-#     data = pd.DataFrame(data)
-    
-#     inserter = DoctorLoginDAO()
-#     inserter.getquery('RoboDoc')
+if __name__ == "__main__":
+    # Data for the new patient
+    doctors_data = [
+    {'DoctorID': 1, 'Username': 'DrSmith', 'Password': 'DrSmithPass1'},
+    {'DoctorID': 2, 'Username': 'DrJohnson', 'Password': 'Doctor123#'},
+    {'DoctorID': 3, 'Username': 'DrDavis', 'Password': 'SecureDoc$'},
+]
+
+# Create a DataFrame from the doctor data
+    doctors_df = pd.DataFrame(doctors_data)
+
+# Create a DoctorLoginDAO object
+    doctor_login_dao = DoctorLoginDAO()
+
+# Insert the doctor data into the database
+    doctor_login_dao.insert_doctor_data(doctors_df) 
