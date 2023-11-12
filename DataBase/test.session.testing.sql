@@ -1,1 +1,1 @@
-SELECT * FROM doctor_login
+SELECT * FROM patient
